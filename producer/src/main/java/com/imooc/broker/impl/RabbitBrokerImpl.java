@@ -1,6 +1,7 @@
 package com.imooc.broker.impl;
 
 import com.imooc.Message;
+import com.imooc.MessageType;
 import com.imooc.broker.AsyncBaseQueue;
 import com.imooc.broker.RabbitBroker;
 import com.imooc.broker.RabbitTemplateContainer;
@@ -17,10 +18,16 @@ public class RabbitBrokerImpl implements RabbitBroker {
   @Autowired private RabbitTemplateContainer rabbitTemplateContainer;
 
   @Override
-  public void rapidSend(Message message) {}
+  public void rapidSend(Message message) {
+    message.setMessageType(MessageType.RAPID);
+    sendKernel(message);
+  }
 
   @Override
-  public void confirmSend(Message message) {}
+  public void confirmSend(Message message) {
+    message.setMessageType(MessageType.CONFIRM);
+    sendKernel(message);
+  }
 
   @Override
   public void reliantSend(Message message) {}
