@@ -14,7 +14,7 @@ public class MessageBuilder {
   private String messageId;
   private String topic;
   private String routingKey = "";
-  private Map<String, Object> attributes = new HashMap<String, Object>();
+  private Map<String, Object> attributes = new HashMap<>(10);
   private int delayMills;
   private String messageType = MessageType.CONFIRM;
 

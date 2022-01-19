@@ -16,7 +16,7 @@ public class Message implements Serializable {
   /** 消息的路由规则 */
   private String routingKey = "";
   /** 消息的附加属性 */
-  private Map<String, Object> attributes = new HashMap<String, Object>();
+  private Map<String, Object> attributes = new HashMap<>(10);
   /** 延迟消息的参数配置 */
   private int delayMills;
   /** 消息类型：默认为confirm消息类型 */
