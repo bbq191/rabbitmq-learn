@@ -5,7 +5,12 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.imooc.Message;
 import com.imooc.MessageType;
+import com.imooc.convert.GenericMessageConverter;
+import com.imooc.convert.RabbitMessageConverter;
 import com.imooc.exception.MessageRunTimeException;
+import com.imooc.serializer.Serializer;
+import com.imooc.serializer.SerializerFactory;
+import com.imooc.serializer.impl.JacksonSerializerFactory;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +37,8 @@ import org.springframework.stereotype.Component;
 public class RabbitTemplateContainer implements RabbitTemplate.ConfirmCallback {
   private final Map<String, RabbitTemplate> rabbitMap = Maps.newConcurrentMap();
   private final Splitter splitter = Splitter.on("#");
+  private final SerializerFactory serializerFactory = JacksonSerializerFactory.INSTANCE;
+
   @Autowired private ConnectionFactory connectionFactory;
 
   public RabbitTemplate getTemplate(Message message) throws MessageRunTimeException {
@@ -49,10 +56,10 @@ public class RabbitTemplateContainer implements RabbitTemplate.ConfirmCallback {
     newTemplate.setRetryTemplate(new RetryTemplate());
 
     //	添加序列化反序列化和converter对象
-    //    Serializer serializer = serializerFactory.create();
-    //    GenericMessageConverter gmc = new GenericMessageConverter(serializer);
-    //    RabbitMessageConverter rmc = new RabbitMessageConverter(gmc);
-    //    newTemplate.setMessageConverter(rmc);
+    Serializer serializer = serializerFactory.create();
+    GenericMessageConverter gmc = new GenericMessageConverter(serializer);
+    RabbitMessageConverter rmc = new RabbitMessageConverter(gmc);
+    newTemplate.setMessageConverter(rmc);
 
     String messageType = message.getMessageType();
     if (!MessageType.RAPID.equals(messageType)) {
