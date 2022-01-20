@@ -1,0 +1,6 @@
+- [x] rabbitmq 组件封装
+- [x] elasticjob 组件封装
+- [x] 迅速消息
+- [x] 确认消息
+- [x] 批量消息
+- [x] 延时消息（需配合 rabbitmq 延迟插件）
