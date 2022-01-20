@@ -9,5 +9,5 @@ import org.springframework.context.annotation.Configuration;
  * @author afu
  */
 @Configuration
-@ComponentScan({"com.imooc"})
+@ComponentScan({"com.imooc.*"})
 public class RabbitProducerAutoConfiguration {}

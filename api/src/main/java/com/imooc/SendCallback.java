@@ -7,13 +7,9 @@ package com.imooc;
  */
 public interface SendCallback {
 
-  /**
-   * 成功
-   */
+  /** 成功 */
   void onSuccess();
 
-  /**
-   * 失败
-   */
+  /** 失败 */
   void onFailure();
 }
