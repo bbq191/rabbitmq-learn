@@ -22,6 +22,8 @@ public class RabbitMessageConverter implements MessageConverter {
   @Override
   public Message toMessage(Object o, MessageProperties messageProperties)
       throws MessageConversionException {
+    com.imooc.Message message = (com.imooc.Message) o;
+    messageProperties.setDelay(message.getDelayMills());
     return this.delegate.toMessage(o, messageProperties);
   }
 
