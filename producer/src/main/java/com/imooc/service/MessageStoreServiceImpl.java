@@ -4,6 +4,7 @@ import com.imooc.constant.BrokerMessageStatus;
 import com.imooc.entity.BrokerMessage;
 import com.imooc.mapper.BrokerMessageMapper;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,8 @@ public class MessageStoreServiceImpl implements MessageStoreService {
     return this.brokerMessageMapper.update4TryCount(brokerMessageId, new Date());
   }
 
-  //	public List<BrokerMessage> fetchTimeOutMessage4Retry(BrokerMessageStatus brokerMessageStatus){
-  //		return
-  // this.brokerMessageMapper.queryBrokerMessageStatus4Timeout(brokerMessageStatus.getCode());
-  //	}
+  @Override
+  public List<BrokerMessage> fetchTimeOutMessage4Retry(BrokerMessageStatus brokerMessageStatus) {
+    return this.brokerMessageMapper.queryBrokerMessageStatus4Timeout(brokerMessageStatus.getCode());
+  }
 }

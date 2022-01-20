@@ -1,9 +1,15 @@
 package com.imooc.service;
 
+import com.imooc.constant.BrokerMessageStatus;
 import com.imooc.entity.BrokerMessage;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
-/** @author afu */
+/**
+ * 数据表操作接口
+ *
+ * @author afu
+ */
 @Service
 public interface MessageStoreService {
   int insert(BrokerMessage brokerMessage);
@@ -16,6 +22,5 @@ public interface MessageStoreService {
 
   int updateTryCount(String brokerMessageId);
 
-  //  List<BrokerMessage> fetchTimeOutMessage4Retry(BrokerMessageStatus brokerMessageStatus);
-
+  List<BrokerMessage> fetchTimeOutMessage4Retry(BrokerMessageStatus brokerMessageStatus);
 }
