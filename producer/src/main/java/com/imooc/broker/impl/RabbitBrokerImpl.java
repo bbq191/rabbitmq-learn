@@ -5,7 +5,13 @@ import com.imooc.MessageType;
 import com.imooc.broker.AsyncBaseQueue;
 import com.imooc.broker.RabbitBroker;
 import com.imooc.broker.RabbitTemplateContainer;
+import com.imooc.constant.BrokerMessageConst;
+import com.imooc.constant.BrokerMessageStatus;
+import com.imooc.entity.BrokerMessage;
+import com.imooc.service.MessageStoreService;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class RabbitBrokerImpl implements RabbitBroker {
   @Autowired private RabbitTemplateContainer rabbitTemplateContainer;
+  @Autowired private MessageStoreService messageStoreService;
 
   @Override
   public void rapidSend(Message message) {
@@ -30,7 +37,21 @@ public class RabbitBrokerImpl implements RabbitBroker {
   }
 
   @Override
-  public void reliantSend(Message message) {}
+  public void reliantSend(Message message) {
+    message.setMessageType(MessageType.RELIANT);
+    // 记录发送日志
+    Date now = new Date();
+    BrokerMessage brokerMessage = new BrokerMessage();
+    brokerMessage.setMessageId(message.getMessageId());
+    brokerMessage.setStatus(BrokerMessageStatus.SENDING.getCode());
+    brokerMessage.setNextRetry(DateUtils.addMinutes(now, BrokerMessageConst.TIMEOUT));
+    brokerMessage.setCreateTime(now);
+    brokerMessage.setUpdateTime(now);
+    brokerMessage.setMessage(message);
+    messageStoreService.insert(brokerMessage);
+    // 执行发送消息
+    sendKernel(message);
+  }
 
   @Override
   public void sendMessages() {}
